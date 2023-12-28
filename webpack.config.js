@@ -2,7 +2,7 @@ import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import postcss from "postcss";
+import CopyPlugin from "copy-webpack-plugin";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default {
@@ -16,9 +16,7 @@ export default {
   },
   devtool: "source-map",
   devServer: {
-    static: {
-      directory: path.resolve(__dirname, "dist"),
-    },
+    watchFiles: ["src/**/*"],
     port: 5900,
     open: true,
     hot: true,
@@ -28,7 +26,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         include: path.resolve(__dirname, "src"),
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
@@ -51,8 +49,16 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       title: "linCliq",
-      template: "./public/index.html",
+      template: path.resolve(__dirname, "src/public/index.html"),
       filename: "index.html",
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "src/public/index.html"),
+          to: path.resolve(__dirname, "index.html"),
+        },
+      ],
     }),
   ],
 };
