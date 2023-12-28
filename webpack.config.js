@@ -2,13 +2,15 @@ import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import postcss from "postcss";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default {
+  mode: "development",
   entry: { bundle: path.resolve(__dirname, "src/index.jsx") },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name][contenthash].js",
+    filename: "[name].[contenthash].js",
     clean: true,
     assetModuleFilename: "assets/[name][ext]",
   },
@@ -31,7 +33,7 @@ export default {
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -46,10 +48,11 @@ export default {
       },
     ],
   },
-  Plugins: [
+  plugins: [
     new HtmlWebpackPlugin({
       title: "linCliq",
-      filename: "./public/index.html",
+      template: "./public/index.html",
+      filename: "index.html",
     }),
   ],
 };
