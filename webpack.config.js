@@ -1,6 +1,5 @@
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import CopyPlugin from "copy-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -63,14 +62,6 @@ export default {
       title: "linCliq",
       template: path.resolve(__dirname, "src/public/index.html"),
       filename: "index.html",
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, "src/public/index.html"),
-          to: path.resolve(__dirname, "index.html"),
-        },
-      ],
     }),
     new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
   ],
