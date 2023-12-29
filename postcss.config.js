@@ -3,5 +3,9 @@ import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 
 export default {
-  plugins: [postcssPresetEnv(), tailwindcss(), autoprefixer()],
+  plugins: [
+    postcssPresetEnv(),
+    tailwindcss("./tailwind.config.js"),
+    autoprefixer(),
+  ],
 };

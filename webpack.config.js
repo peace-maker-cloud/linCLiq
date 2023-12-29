@@ -1,8 +1,9 @@
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import CopyPlugin from "copy-webpack-plugin";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default {
@@ -26,9 +27,20 @@ export default {
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        include: path.resolve(__dirname, "src"),
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        test: /\.css$/,
+        include: path.resolve(__dirname, "src/styles"),
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: ["tailwindcss", "autoprefixer"],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.jsx?$/,
@@ -60,5 +72,6 @@ export default {
         },
       ],
     }),
+    new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
   ],
 };
